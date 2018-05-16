@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="constructor">
+    <bean id="netsparkerCloudScanRunType" class="com.netsparker.teamcity.ScanRunType"/>
+    <bean id="netsparkerCloudPluginSettingsTab" class="com.netsparker.teamcity.PluginSettingsTab"/>
+    <bean id="netsparkerCloudPluginSettingsManager" class="com.netsparker.teamcity.PluginSettingsManager"/>
+    <bean id="netsparkerCloudPluginSettingsController" class="com.netsparker.teamcity.PluginSettingsController"/>
+    <bean id="netsparkerCloudTestController" class="com.netsparker.teamcity.ScanTestController"/>
+    <bean id="netsparkerCloudWebsiteModelController" class="com.netsparker.teamcity.WebsiteModelController"/>
+    <bean id="netsparkerCloudScanDataController" class="com.netsparker.teamcity.ScanDataController"/>
+    <bean id="netsparkerScanLogTab" class="com.netsparker.teamcity.NetsparkerCloudReport"/>
+    <bean  id="netsparkerScanBuildParametersPreprocessor" class="com.netsparker.teamcity.ScanBuildParametersPreprocessor"/>
+</beans>
