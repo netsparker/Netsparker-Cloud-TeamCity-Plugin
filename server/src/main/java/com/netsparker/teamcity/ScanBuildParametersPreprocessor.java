@@ -47,8 +47,8 @@ public class ScanBuildParametersPreprocessor implements ParametersPreprocessor{
 		final PluginSettings pluginSettings = pluginSettingsManager.getPluginSettings();
 		
 		ServerLogger.logInfo("ScanBuildParametersPreprocessor", "Adding API settings...");
-		parameters.put(ScanRequestBase.API_URL_Literal, pluginSettings.getServerURL());
-		parameters.put(ScanRequestBase.API_TOKEN_Literal, pluginSettings.getApiToken());
+		parameters.put(ApiRequestBase.API_URL_Literal, pluginSettings.getServerURL());
+		parameters.put(ApiRequestBase.API_TOKEN_Literal, pluginSettings.getApiToken());
 		
 		ServerLogger.logInfo("ScanBuildParametersPreprocessor", "Adding CI parameters...");
 		final long buildId = build.getBuildId();

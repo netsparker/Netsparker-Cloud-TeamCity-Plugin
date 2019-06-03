@@ -1,6 +1,8 @@
 package com.netsparker.teamcity;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.http.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -66,11 +68,11 @@ public class AppCommon{
 		}
 	}
 	
-	public static URL getBaseURL(String url) throws MalformedURLException {
+	public static URL GetBaseURL(String url) throws MalformedURLException {
 		return new URL(new URL(url), "/");
 	}
 	
-	public static String mapToQueryString(Map<String, String> map) {
+	public static String MapToQueryString(Map<String, String> map) {
 		StringBuilder stringBuilder = new StringBuilder();
 		
 		for (String key : map.keySet()) {
@@ -90,7 +92,7 @@ public class AppCommon{
 		return stringBuilder.toString();
 	}
 	
-	public static Map<String, String> queryStringToMap(String input) {
+	public static Map<String, String> QueryStringToMap(String input) {
 		Map<String, String> map = new HashMap<String, String>();
 		
 		String[] nameValuePairs = input.split("&");
@@ -120,5 +122,9 @@ public class AppCommon{
 			value =  obj.get(key);
 		}
 		return value;
+	}
+
+	public static String ParseResponseToString(HttpResponse response) throws IOException {
+		return IOUtils.toString(response.getEntity().getContent());
 	}
 }

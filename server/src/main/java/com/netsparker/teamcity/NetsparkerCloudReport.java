@@ -27,13 +27,15 @@ public class NetsparkerCloudReport extends LogTabBase{
 	protected void fillModel(@NotNull Map<String, Object> model, @NotNull HttpServletRequest request, @NotNull SBuild build) {
 		try {
 			Map<String, String> runnerProperties = getProperties(build);
-			
+
 			DataStorage dataStorage = new DataStorage(server);
 			ScanRequestResult scanRequestResult = dataStorage.GetScanRequestResult(build.getBuildId(), runnerProperties);
 			
 			ServerLogger.logInfo("NetsparkerCloudReport", "Requesting the report...");
-			PluginSettings pluginSettings = pluginSettingsManager.getPluginSettings();
-			ScanReport report = scanRequestResult.getReport(pluginSettings.getServerURL(), pluginSettings.getApiToken());
+
+			String apiToken = pluginSettingsManager.getPluginSettings().getApiToken();
+
+			ScanReport report = scanRequestResult.getReport(apiToken);
 			
 			ServerLogger.logInfo("NetsparkerCloudReport", "Parsing the report...");
 			model.put("content", report.getContent());

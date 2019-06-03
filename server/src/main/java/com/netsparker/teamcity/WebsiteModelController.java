@@ -2,7 +2,6 @@ package com.netsparker.teamcity;
 
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
-import net.sf.corn.httpclient.HttpResponse;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -37,14 +36,14 @@ public class WebsiteModelController extends AjaxControllerBase{
 	@Override
 	protected void doPost(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull Element element) {
 		Map<String, String> parameters = new HashMap<>();
-		int httpStatusCode;
+
 		final PluginSettings pluginSettings = pluginSettingsManager.getPluginSettings();
 		try {
 			parameters.put("netsparkerCloudServerURL", pluginSettings.getServerURL());
 			parameters.put("netsparkerCloudApiToken", pluginSettings.getApiToken());
 			WebsiteModelRequest websiteModelRequest = new WebsiteModelRequest(parameters);
-			HttpResponse response = websiteModelRequest.getPluginWebSiteModels();
-			httpStatusCode = response.getCode();
+			websiteModelRequest.requestPluginWebSiteModels();
+			int httpStatusCode = websiteModelRequest.getResponseStatusCode();
 			
 			element.addContent(new Element("httpStatusCode").setText(String.valueOf(httpStatusCode)));
 			
@@ -52,7 +51,7 @@ public class WebsiteModelController extends AjaxControllerBase{
 				ServerLogger.logInfo("WebsiteModelController", "Netsparker Cloud test connection succeeded.");
 				try {
 					SAXBuilder builder = new SAXBuilder();
-					String xmlData = response.getData();
+					String xmlData = websiteModelRequest.getResponseContent();
 					InputStream stream = new ByteArrayInputStream(xmlData.getBytes("UTF-8"));
 					Document document = builder.build(stream);
 					final Element tempElement = (Element) document.getContent().get(0);

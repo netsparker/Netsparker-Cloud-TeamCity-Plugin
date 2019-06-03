@@ -1,6 +1,7 @@
 package com.netsparker.teamcity;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import jetbrains.buildServer.serverSide.ServerPaths;
 import jetbrains.buildServer.serverSide.crypt.RSACipher;
 import jetbrains.buildServer.util.FileUtil;
@@ -16,7 +17,7 @@ public class PluginSettingsManager{
 	private CameFromSupport cameFromSupport;
 	
 	public PluginSettingsManager(@NotNull ServerPaths serverPaths) {
-		xStream = new XStream();
+		xStream = new XStream(new DomDriver());
 		xStream.processAnnotations(PluginSettings.class);
 		xStream.setClassLoader(PluginSettings.class.getClassLoader());
 		

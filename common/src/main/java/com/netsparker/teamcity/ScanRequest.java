@@ -1,8 +1,12 @@
 package com.netsparker.teamcity;
 
-import jetbrains.buildServer.serverSide.crypt.RSACipher;
-import net.sf.corn.httpclient.HttpForm;
-import net.sf.corn.httpclient.HttpResponse;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -10,9 +14,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class ScanRequest extends ScanRequestBase{
+public class ScanRequest extends ApiRequestBase {
 	//API settings property names start with "netsparkerCloud" to be unique in Teamcity environment.
 	public static final String SCAN_TYPE_Literal = "netsparkerCloudScanType";
 	public static final String WEBSITE_ID_Literal = "netsparkerCloudWebsiteID";
@@ -22,8 +28,8 @@ public class ScanRequest extends ScanRequestBase{
 	
 	public ScanRequest(@NotNull Map<String, String> scanParameters) throws MalformedURLException, NullPointerException, URISyntaxException {
 		super(scanParameters);
-		scanUri = getRequestEndpoint();
-		testUri = getTestEndpoint();
+		scanUri = new URL(ApiURL, "api/1.0/scans/CreateFromPluginScanRequest").toURI();
+		testUri = new URL(ApiURL, "api/1.0/scans/VerifyPluginScanRequest").toURI();
 		scanType = ScanType.valueOf(scanParameters.get(SCAN_TYPE_Literal));
 		websiteId = scanParameters.get(WEBSITE_ID_Literal);
 		profileId = scanParameters.get(PROFILE_ID_Literal);
@@ -36,91 +42,52 @@ public class ScanRequest extends ScanRequestBase{
 	public final String websiteId;
 	public final String profileId;
 	public final VCSCommit vcsCommit;
-	
-	public HttpResponse scanRequest() throws IOException, URISyntaxException {
-		HttpForm client = getHttpClient();
-		HttpResponse response = client.doPost();
-		
+
+
+	public HttpResponse scanRequest() throws IOException {
+		HttpClient client = getHttpClient();
+		final HttpPost httpPost = new HttpPost(scanUri);
+		httpPost.setHeader("Accept",json);
+		httpPost.setHeader(HttpHeaders.AUTHORIZATION, getAuthHeader());
+
+		List<NameValuePair> params = new ArrayList<>();
+		setScanParams(params);
+		vcsCommit.addVcsCommitInfo(params);
+		httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+		return client.execute(httpPost);
+	}
+
+	public HttpResponse testRequest() throws IOException {
+		HttpClient client = getHttpClient();
+		final HttpPost httpPost = new HttpPost(testUri);
+		httpPost.setHeader("Accept",json);
+		httpPost.setHeader(HttpHeaders.AUTHORIZATION, getAuthHeader());
+
+		List<NameValuePair> params = new ArrayList<>();
+		setScanParams(params);
+		httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+		HttpResponse response = client.execute(httpPost);
+
 		return response;
 	}
-	
-	public HttpResponse testRequest() throws IOException, URISyntaxException {
-		HttpForm client = getHttpTestClient();
-		HttpResponse response = client.doPost();
-		
-		if (response.getCode() == 401) {
-			try {
-				client = getHttpTestClientWithDecryptedToken();
-				response = client.doPost();
-			} catch (Exception ex) {
-			
-			}
-		}
-		
-		return response;
-	}
-	
-	@NotNull
-	private URI getRequestEndpoint() throws MalformedURLException, URISyntaxException {
-		String relativePath = "api/1.0/scans/CreateFromPluginScanRequest";
-		return new URL(ApiURL, relativePath).toURI();
-	}
-	
-	@NotNull
-	private URI getTestEndpoint() throws MalformedURLException, URISyntaxException {
-		String relativePath = "api/1.0/scans/VerifyPluginScanRequest";
-		return new URL(ApiURL, relativePath).toURI();
-	}
-	
-	private HttpForm getHttpTestClient() throws MalformedURLException, URISyntaxException {
-		HttpForm client = new HttpForm(testUri);
-		//default is XML
-		client.setAcceptedType(json);
-		// Basic Authentication
-		client.setCredentials("", ApiToken);
-		setScanParams(client);
-		
-		return client;
-	}
-	
-	private HttpForm getHttpTestClientWithDecryptedToken() throws MalformedURLException, URISyntaxException {
-		HttpForm client = new HttpForm(testUri);
-		//default is XML
-		client.setAcceptedType(json);
-		// Basic Authentication
-		client.setCredentials("", RSACipher.decryptWebRequestData(ApiEncryptedToken));
-		setScanParams(client);
-		
-		return client;
-	}
-	
-	private HttpForm getHttpClient() throws MalformedURLException, URISyntaxException {
-		HttpForm client = new HttpForm(scanUri);
-		//default is XML
-		client.setAcceptedType(json);
-		// Basic Authentication
-		client.setCredentials("", ApiToken);
-		setScanParams(client);
-		vcsCommit.addVcsCommitInfo(client);
-		
-		return client;
-	}
-	
-	private void setScanParams(HttpForm client) {
+
+	private void setScanParams(List<NameValuePair> params) {
 		switch (scanType) {
 			case Incremental:
-				client.putFieldValue("WebsiteId", websiteId);
-				client.putFieldValue("ProfileId", profileId);
-				client.putFieldValue("ScanType", "Incremental");
+				params.add(new BasicNameValuePair("WebsiteId", websiteId));
+				params.add(new BasicNameValuePair("ProfileId", profileId));
+				params.add(new BasicNameValuePair("ScanType", "Incremental"));
 				break;
 			case FullWithPrimaryProfile:
-				client.putFieldValue("WebsiteId", websiteId);
-				client.putFieldValue("ScanType", "FullWithPrimaryProfile");
+				params.add(new BasicNameValuePair("WebsiteId", websiteId));
+				params.add(new BasicNameValuePair("ScanType", "FullWithPrimaryProfile"));
 				break;
 			case FullWithSelectedProfile:
-				client.putFieldValue("WebsiteId", websiteId);
-				client.putFieldValue("ProfileId", profileId);
-				client.putFieldValue("ScanType", "FullWithSelectedProfile");
+				params.add(new BasicNameValuePair("WebsiteId", websiteId));
+				params.add(new BasicNameValuePair("ProfileId", profileId));
+				params.add(new BasicNameValuePair("ScanType", "FullWithSelectedProfile"));
 				break;
 		}
 	}

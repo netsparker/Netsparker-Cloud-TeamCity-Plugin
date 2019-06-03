@@ -3,7 +3,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 public class AppCommonTests{
 	@Test
@@ -31,7 +30,7 @@ public class AppCommonTests{
 	
 	@Test
 	public void IsBaseURLValid() throws MalformedURLException {
-		String actual = AppCommon.getBaseURL("http://localhost:2097/").toString();
+		String actual = AppCommon.GetBaseURL("http://localhost:2097/").toString();
 		
 		Assert.assertEquals("http://localhost:2097/",actual);
 	}

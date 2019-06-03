@@ -1,8 +1,10 @@
 package com.netsparker.teamcity;
 
 import jetbrains.buildServer.version.ServerVersionHolder;
-import net.sf.corn.httpclient.HttpForm;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
+import java.util.List;
 import java.util.Map;
 
 public class VCSCommit{
@@ -14,7 +16,8 @@ public class VCSCommit{
 	public static final String VCS_VERSION_LITERAL = "netsparkerCloudVCS_BranchVersion";
 	public static final String VCS_Timestamp = "netsparkerCloudVCS_TimeStamp";
 	public static final String COMMITTER_USERNAME_LITERAL = "netsparkerCloudCommitterUserName";
-	
+	public static final String pluginVersion = "1.1.0";
+
 	
 	private final Map<String, String> parametersWithPrefix;
 	
@@ -22,7 +25,6 @@ public class VCSCommit{
 		this.parametersWithPrefix = parameters;
 		
 		serverVersion=ServerVersionHolder.getVersion().getDisplayVersion();
-		pluginVersion="1.0.0";
 		buildId = parameters.get(BUILD_ID_LITERAL);
 		buildConfigurationName = parameters.get(BUILD_CONFIGURATION_NAME_LITERAL);
 		buildURL = parameters.get(BUILD_URL_LITERAL);
@@ -34,7 +36,6 @@ public class VCSCommit{
 	}
 	
 	public final String serverVersion;
-	public final String pluginVersion;
 	public final String buildId;
 	public final String buildConfigurationName;
 	public final String buildURL;
@@ -44,17 +45,17 @@ public class VCSCommit{
 	public final String ciTimestamp;
 	public final String committer;
 	
-	public void addVcsCommitInfo(HttpForm client) {
-		client.putFieldValue("VcsCommitInfoModel.CiBuildId", buildId);
-		client.putFieldValue("VcsCommitInfoModel.IntegrationSystem", "Teamcity");
-		client.putFieldValue("VcsCommitInfoModel.CiBuildServerVersion", ServerVersionHolder.getVersion().getDisplayVersion());
-		client.putFieldValue("VcsCommitInfoModel.CiNcPluginVersion","1.0.0");
-		client.putFieldValue("VcsCommitInfoModel.CiBuildConfigurationName", buildConfigurationName);
-		client.putFieldValue("VcsCommitInfoModel.CiBuildUrl", buildURL);
-		client.putFieldValue("VcsCommitInfoModel.CiBuildHasChange", String.valueOf(buildHasChange));
-		client.putFieldValue("VcsCommitInfoModel.CiTimestamp", ciTimestamp);
-		client.putFieldValue("VcsCommitInfoModel.VcsName", vcsName);
-		client.putFieldValue("VcsCommitInfoModel.VcsVersion", vcsVersion);
-		client.putFieldValue("VcsCommitInfoModel.Committer", committer);
+	public void addVcsCommitInfo(List<NameValuePair> params) {
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildId", buildId));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.IntegrationSystem", "Teamcity"));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildServerVersion", ServerVersionHolder.getVersion().getDisplayVersion()));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiNcPluginVersion",pluginVersion));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildConfigurationName", buildConfigurationName));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildUrl", buildURL));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildHasChange", String.valueOf(buildHasChange)));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiTimestamp", ciTimestamp));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.VcsName", vcsName));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.VcsVersion", vcsVersion));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.Committer", committer));
 	}
 }

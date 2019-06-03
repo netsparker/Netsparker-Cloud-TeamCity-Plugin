@@ -4,13 +4,13 @@
   <parent>
     <artifactId>netsparkercloud-teamcity-plugin</artifactId>
     <groupId>com.netsparker</groupId>
-    <version>1.0.0</version>
+    <version>1.1</version>
   </parent>
   <artifactId>teamcity.build</artifactId>
   <packaging>pom</packaging>
   <properties>
       <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-      <teamcity.netsparkercloud-teamcity-plugin.plugin.version>1.0.0</teamcity.netsparkercloud-teamcity-plugin.plugin.version>
+      <teamcity.netsparkercloud-teamcity-plugin.plugin.version>1.1</teamcity.netsparkercloud-teamcity-plugin.plugin.version>
       <teamcity.netsparkercloud-teamcity-plugin.plugin.vendorName>Netsparker</teamcity.netsparkercloud-teamcity-plugin.plugin.vendorName>
       <teamcity.netsparkercloud-teamcity-plugin.plugin.vendorUrl>https://www.netsparker.com/</teamcity.netsparkercloud-teamcity-plugin.plugin.vendorUrl>
   </properties>
@@ -18,17 +18,17 @@
       <dependency>
            <groupId>com.netsparker</groupId>
            <artifactId>teamcity.agent</artifactId>
-           <version>1.0.0</version>
+          <version>1.1</version>
       </dependency>
       <dependency>
            <groupId>com.netsparker</groupId>
            <artifactId>teamcity.common</artifactId>
-           <version>1.0.0</version>
+          <version>1.1</version>
       </dependency>
       <dependency>
            <groupId>com.netsparker</groupId>
            <artifactId>teamcity.server</artifactId>
-           <version>1.0.0</version>
+          <version>1.1</version>
       </dependency>
   </dependencies>
   <build>

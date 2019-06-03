@@ -47,7 +47,7 @@ public abstract class LogTabBase extends ViewLogTab{
 		ServerLogger.logInfo("NetsparkerCloudReport", "Getting runner properties...");
 		SBuildRunnerDescriptor runner = getBuildRunner(sbuild);
 		Map<String, String> properties = runner.getParameters();
-		
+
 		return properties;
 	}
 	

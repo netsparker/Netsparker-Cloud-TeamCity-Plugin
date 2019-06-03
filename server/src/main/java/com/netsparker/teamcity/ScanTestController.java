@@ -3,7 +3,6 @@ package com.netsparker.teamcity;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.crypt.RSACipher;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
-import net.sf.corn.httpclient.HttpResponse;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,16 +31,14 @@ public class ScanTestController extends AjaxControllerBase{
 	@Override
 	protected void doPost(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull Element element) {
 		Map<String, String> parameters = getParameters(httpServletRequest);
-		String decryptedToken = RSACipher.decryptWebRequestData(httpServletRequest.getParameter(ScanRequestBase.API_TOKEN_Literal));
-		parameters.put(ScanRequestBase.API_TOKEN_Literal, decryptedToken);
-		int httpStatusCode;
-		
+		String decryptedToken = RSACipher.decryptWebRequestData(httpServletRequest.getParameter(ApiRequestBase.API_TOKEN_Literal));
+		parameters.put(ApiRequestBase.API_TOKEN_Literal, decryptedToken);
+
 		try {
 			ServerLogger.logInfo("ScanTestController", "Testing the Netsparker Cloud connection.");
 			WebsiteModelRequest websiteModelRequest = new WebsiteModelRequest(parameters);
-			HttpResponse response = websiteModelRequest.getPluginWebSiteModels();
-			httpStatusCode = response.getCode();
-			
+			websiteModelRequest.requestPluginWebSiteModels();
+			int httpStatusCode=websiteModelRequest.getResponseStatusCode();
 			element.addContent(new Element("httpStatusCode").setText(String.valueOf(httpStatusCode)));
 			
 			if (httpStatusCode == 200) {

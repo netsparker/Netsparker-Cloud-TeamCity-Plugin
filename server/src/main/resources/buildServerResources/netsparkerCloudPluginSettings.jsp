@@ -1,4 +1,4 @@
-<%@ page import="com.netsparker.teamcity.ScanRequestBase" %>
+<%@ page import="com.netsparker.teamcity.ApiRequestBase" %>
 <%@include file="/include.jsp" %>
 <%@ taglib prefix="props" tagdir="/WEB-INF/tags/props" %>
 <%@ taglib prefix="l" tagdir="/WEB-INF/tags/layout" %>
