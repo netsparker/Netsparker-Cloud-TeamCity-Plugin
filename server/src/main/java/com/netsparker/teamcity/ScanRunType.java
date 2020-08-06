@@ -30,13 +30,13 @@ public class ScanRunType extends RunType{
 	@NotNull
 	@Override
 	public String getDisplayName() {
-		return "Netsparker Cloud Scan";
+		return "Netsparker Enterprise Scan";
 	}
 	
 	@NotNull
 	@Override
 	public String getDescription() {
-		return "Build runner that starts Netsparker Cloud scan for your site.";
+		return "Build runner that starts Netsparker Enterprise scan for your site.";
 	}
 	
 	@Nullable
@@ -58,7 +58,7 @@ public class ScanRunType extends RunType{
 	}
 	
 	public String getPluginSettingsJspFilePath() {
-		return pluginDescriptor.getPluginResourcesPath() + "netsparkerCloudPluginSettings.jsp";
+		return pluginDescriptor.getPluginResourcesPath() + "netsparkerEnterprisePluginSettings.jsp";
 	}
 	
 	@Nullable

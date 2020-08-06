@@ -11,7 +11,7 @@
          <outputDirectory>/</outputDirectory>
      </file> 
      <file>
-         <source>target/netsparkercloud-agent.zip</source>
+         <source>target/netsparkerenterprise-agent.zip</source>
          <outputDirectory>agent</outputDirectory>
      </file> 
   </files>

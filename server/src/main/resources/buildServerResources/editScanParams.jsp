@@ -9,7 +9,7 @@
 <l:settingsGroup title="Scan Settings">
     <tr>
         <th>
-            <label for="netsparkerCloudScanType">Scan Type:<l:star/>
+            <label for="netsparkerEnterpriseScanType">Scan Type:<l:star/>
                 <bs:helpIcon iconTitle="<b>Incremental</b>
                         <hr>
                         The website's profile is used for retrieving the scan settings.<br>
@@ -17,7 +17,7 @@
                         <b>Full (With primary profile)</b>
                         <hr>
                         Performs full scan with primary profile.<br>
-                        If no primary profile have been defined yet, default Netsparker Cloud scan settings will be used.<br><br>
+                        If no primary profile have been defined yet, default Netsparker Enterprise scan settings will be used.<br><br>
                         <b>Full (With selected profile)</b>
                         <hr>
                         Performs full scan with provided profile settings."/>
@@ -25,7 +25,7 @@
             </label>
         </th>
         <td>
-            <props:selectProperty id="netsparkerCloudScanType" name="<%=ScanRequest.SCAN_TYPE_Literal%>"
+            <props:selectProperty id="netsparkerEnterpriseScanType" name="<%=ScanRequest.SCAN_TYPE_Literal%>"
                                   className="longField">
                 <props:option value="">-- Please select a scan type --</props:option>
                 <props:option value="<%=ScanType.Incremental.name()%>">Incremental</props:option>
@@ -34,44 +34,44 @@
                 <props:option
                         value="<%=ScanType.FullWithSelectedProfile.name()%>">Full (With selected profile)</props:option>
             </props:selectProperty>
-            <span class="error" id="error_netsparkerCloudScanType"></span>
+            <span class="error" id="error_netsparkerEnterpriseScanType"></span>
         </td>
     </tr>
     <tr>
         <th>
-            <label for="netsparkerCloudWebsiteID">Website Deploy URL:<l:star/>
+            <label for="netsparkerEnterpriseWebsiteID">Website Deploy URL:<l:star/>
                 <bs:helpIcon iconTitle="This address will be scanned."/>
             </label>
         </th>
         <td>
             <props:hiddenProperty id="<%=ScanRequest.WEBSITE_ID_Literal%>" name="<%=ScanRequest.WEBSITE_ID_Literal%>"/>
-            <props:selectProperty id="netsparkerCloudWebsiteID_dummy" name="netsparkerCloudWebsiteID_dummy"
+            <props:selectProperty id="netsparkerEnterpriseWebsiteID_dummy" name="netsparkerEnterpriseWebsiteID_dummy"
                                   enableFilter="true" className="longField">
                 <props:option value="">-- Please select a website URL --</props:option>
             </props:selectProperty>
-            <span class="error" id="error_netsparkerCloudWebsiteID"></span>
+            <span class="error" id="error_netsparkerEnterpriseWebsiteID"></span>
         </td>
     </tr>
     <tr>
         <th>
-            <label for="netsparkerCloudProfileID">Profile Name:<l:star/>
+            <label for="netsparkerEnterpriseProfileID">Profile Name:<l:star/>
                 <bs:helpIcon iconTitle="This profile setting will be used in the scan."/>
             </label>
         </th>
         <td>
             <props:hiddenProperty id="<%=ScanRequest.PROFILE_ID_Literal%>" name="<%=ScanRequest.PROFILE_ID_Literal%>"/>
-            <props:selectProperty id="netsparkerCloudProfileID_dummy" name="netsparkerCloudProfileID_dummy"
+            <props:selectProperty id="netsparkerEnterpriseProfileID_dummy" name="netsparkerEnterpriseProfileID_dummy"
                                   enableFilter="true" className="longField">
                 <props:option value="">-- Please select a profile name --</props:option>
             </props:selectProperty>
-            <span class="error" id="error_netsparkerCloudProfileID"></span>
+            <span class="error" id="error_netsparkerEnterpriseProfileID"></span>
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <forms:progressRing style="display:none;float:left;" id="netsparkerCloudLoadingIcon"
-                                progressTitle="Loading the Netsparker Cloud settings. Please wait..."></forms:progressRing>
-            <span class="error" id="error_netsparkerCloudApiSettings"></span>
+            <forms:progressRing style="display:none;float:left;" id="netsparkerEnterpriseLoadingIcon"
+                                progressTitle="Loading the Netsparker Enterprise settings. Please wait..."></forms:progressRing>
+            <span class="error" id="error_netsparkerEnterpriseApiSettings"></span>
         </td>
     </tr>
 </l:settingsGroup>
@@ -84,23 +84,23 @@
     var ncWebSiteModels = [];
     var ncTestRequestData = {};
     var ncInitialScanType, ncInitialWebsiteId, ncInitialProfileId;
-    var netsparkerCloudApiSettingsErrorSpan;
-    var netsparkerCloudLoadingIcon;
+    var netsparkerEnterpriseApiSettingsErrorSpan;
+    var netsparkerEnterpriseLoadingIcon;
 
     function initializeNcElementsAndParams() {
-        ncScanTypeInput = jQuery("#netsparkerCloudScanType");
-        ncWebsiteIdInput = jQuery("#netsparkerCloudWebsiteID");
-        ncProfileIdInput = jQuery("#netsparkerCloudProfileID");
+        ncScanTypeInput = jQuery("#netsparkerEnterpriseScanType");
+        ncWebsiteIdInput = jQuery("#netsparkerEnterpriseWebsiteID");
+        ncProfileIdInput = jQuery("#netsparkerEnterpriseProfileID");
 
-        ncWebsiteIdDummySelect = jQuery("#netsparkerCloudWebsiteID_dummy");
-        ncProfileIdDummySelect = jQuery("#netsparkerCloudProfileID_dummy");
+        ncWebsiteIdDummySelect = jQuery("#netsparkerEnterpriseWebsiteID_dummy");
+        ncProfileIdDummySelect = jQuery("#netsparkerEnterpriseProfileID_dummy");
 
         ncScanTypeContainer = ncScanTypeInput.closest("tr");
         ncWebsiteIdContainer = ncWebsiteIdInput.closest("tr");
         ncProfileIdContainer = ncProfileIdInput.closest("tr");
 
-        netsparkerCloudApiSettingsErrorSpan = jQuery("#error_netsparkerCloudApiSettings");
-        netsparkerCloudLoadingIcon = jQuery("#netsparkerCloudLoadingIcon");
+        netsparkerEnterpriseApiSettingsErrorSpan = jQuery("#error_netsparkerEnterpriseApiSettings");
+        netsparkerEnterpriseLoadingIcon = jQuery("#netsparkerEnterpriseLoadingIcon");
         ncInitialScanType = ncScanTypeInput.val();
         ncInitialWebsiteId = ncWebsiteIdInput.val();
         ncInitialProfileId = ncProfileIdInput.val();
@@ -161,8 +161,8 @@
     function ncInitializeSettings() {
         updateNcParamsAndUI();
         ncScanParams.isConnectionValidated = false;
-        netsparkerCloudLoadingIcon.show();
-        var request = jQuery.post("/netsparkercloud/websitemodel.html");
+        netsparkerEnterpriseLoadingIcon.show();
+        var request = jQuery.post("/netsparkerenterprise/websitemodel.html");
 
         request.done(function (data, statusText, xhr) {
             ncTestRequestData = data;
@@ -175,17 +175,17 @@
                 ncSelectInitialValues();
             } else {
                 if (status == "0") {
-                    netsparkerCloudApiSettingsErrorSpan.text("Failed to connect to the Netsparker Cloud. HTTP status code: 0");
+                    netsparkerEnterpriseApiSettingsErrorSpan.text("Failed to connect to the Netsparker Enterprise. HTTP status code: 0");
                 } else {
-                    netsparkerCloudApiSettingsErrorSpan.text("API settings are not valid. Please verify API settings in Administration page. HTTP status code: " + status);
+                    netsparkerEnterpriseApiSettingsErrorSpan.text("API settings are not valid. Please verify API settings in Administration page. HTTP status code: " + status);
                 }
             }
-            netsparkerCloudLoadingIcon.hide();
+            netsparkerEnterpriseLoadingIcon.hide();
         });
 
         request.fail(function (xhr, statusText) {
-            netsparkerCloudApiSettingsErrorSpan.text("Controller not found. HTTP status code: " + xhr.status);
-            netsparkerCloudLoadingIcon.hide();
+            netsparkerEnterpriseApiSettingsErrorSpan.text("Controller not found. HTTP status code: " + xhr.status);
+            netsparkerEnterpriseLoadingIcon.hide();
         });
     }
 
@@ -220,11 +220,11 @@
 
     function ncInitializeWebsites() {
         updateNcParamsAndUI();
-        var dummyListElement = document.getElementsByClassName("list-wrapper-ufd-teamcity-ui-prop:netsparkerCloudWebsiteID_dummy");
+        var dummyListElement = document.getElementsByClassName("list-wrapper-ufd-teamcity-ui-prop:netsparkerEnterpriseWebsiteID_dummy");
         var ncWebsiteIdDummyList = jQuery(dummyListElement).find("ul").first();
         ncResetWebsiteOptions(ncWebsiteIdDummyList);
         ncAppendWebsiteOptions(ncWebsiteIdDummyList);
-        bootstrapDropdownToList('netsparkerCloudWebsiteID_dummy');
+        bootstrapDropdownToList('netsparkerEnterpriseWebsiteID_dummy');
         ncSelectDefaultScanType();
     }
 
@@ -345,11 +345,11 @@
         var websiteIndex = ncFindModelIndexesFromSelectValues().websiteIndex;
         if (websiteIndex != -1) {
             var ncProfileModels = ncWebSiteModels[websiteIndex].Profiles;
-            var dummyListElement = document.getElementsByClassName("list-wrapper-ufd-teamcity-ui-prop:netsparkerCloudProfileID_dummy");
+            var dummyListElement = document.getElementsByClassName("list-wrapper-ufd-teamcity-ui-prop:netsparkerEnterpriseProfileID_dummy");
             var ncProfileIdDummyList = jQuery(dummyListElement).find("ul").first();
             ncResetProfileOptions(ncProfileIdDummyList, ncProfileModels.length);
             ncAppendProfileOptions(ncProfileIdDummyList, ncProfileModels);
-            bootstrapDropdownToList('netsparkerCloudProfileID_dummy');
+            bootstrapDropdownToList('netsparkerEnterpriseProfileID_dummy');
             ncSelectDefaultProfile();
         }
     }

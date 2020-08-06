@@ -39,8 +39,8 @@ public class WebsiteModelController extends AjaxControllerBase{
 
 		final PluginSettings pluginSettings = pluginSettingsManager.getPluginSettings();
 		try {
-			parameters.put("netsparkerCloudServerURL", pluginSettings.getServerURL());
-			parameters.put("netsparkerCloudApiToken", pluginSettings.getApiToken());
+			parameters.put("netsparkerEnterpriseServerURL", pluginSettings.getServerURL());
+			parameters.put("netsparkerEnterpriseApiToken", pluginSettings.getApiToken());
 			WebsiteModelRequest websiteModelRequest = new WebsiteModelRequest(parameters);
 			websiteModelRequest.requestPluginWebSiteModels();
 			int httpStatusCode = websiteModelRequest.getResponseStatusCode();
@@ -48,7 +48,7 @@ public class WebsiteModelController extends AjaxControllerBase{
 			element.addContent(new Element("httpStatusCode").setText(String.valueOf(httpStatusCode)));
 			
 			if (httpStatusCode == 200) {
-				ServerLogger.logInfo("WebsiteModelController", "Netsparker Cloud test connection succeeded.");
+				ServerLogger.logInfo("WebsiteModelController", "Netsparker Enterprise test connection succeeded.");
 				try {
 					SAXBuilder builder = new SAXBuilder();
 					String xmlData = websiteModelRequest.getResponseContent();
@@ -63,7 +63,7 @@ public class WebsiteModelController extends AjaxControllerBase{
 					element.addContent(new Element("isModelParsed").setText("false"));
 				}
 			} else {
-				ServerLogger.logError("WebsiteModelController", "Netsparker Cloud rejected the request. HTTP status code: " + String.valueOf(httpStatusCode));
+				ServerLogger.logError("WebsiteModelController", "Netsparker Enterprise rejected the request. HTTP status code: " + String.valueOf(httpStatusCode));
 			}
 			
 		} catch (Exception e) {

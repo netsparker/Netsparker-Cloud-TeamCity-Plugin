@@ -35,16 +35,16 @@ public class ScanTestController extends AjaxControllerBase{
 		parameters.put(ApiRequestBase.API_TOKEN_Literal, decryptedToken);
 
 		try {
-			ServerLogger.logInfo("ScanTestController", "Testing the Netsparker Cloud connection.");
+			ServerLogger.logInfo("ScanTestController", "Testing the Netsparker Enterprise connection.");
 			WebsiteModelRequest websiteModelRequest = new WebsiteModelRequest(parameters);
 			websiteModelRequest.requestPluginWebSiteModels();
 			int httpStatusCode=websiteModelRequest.getResponseStatusCode();
 			element.addContent(new Element("httpStatusCode").setText(String.valueOf(httpStatusCode)));
 			
 			if (httpStatusCode == 200) {
-				ServerLogger.logInfo("ScanTestController", "Netsparker Cloud test connection succeeded.");
+				ServerLogger.logInfo("ScanTestController", "Netsparker Enterprise test connection succeeded.");
 			} else {
-				ServerLogger.logError("ScanTestController", "Netsparker Cloud rejected the request. HTTP status code: " + String.valueOf(httpStatusCode));
+				ServerLogger.logError("ScanTestController", "Netsparker Enterprise rejected the request. HTTP status code: " + String.valueOf(httpStatusCode));
 			}
 			
 		} catch (Exception e) {

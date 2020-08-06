@@ -32,7 +32,7 @@ public class DataStorage{
 	}
 	
 	public ScanRequestResult GetScanRequestResult(long buildID, Map<String, String> runnerParams) throws MalformedURLException {
-		ServerLogger.logInfo("NetsparkerCloudReport", "Getting the scan request result...");
+		ServerLogger.logInfo("NetsparkerEnterpriseReport", "Getting the scan request result...");
 		
 		final SBuild build = server.findBuildInstanceById(buildID);
 		SBuildType buildType = build.getBuildType();
@@ -42,7 +42,7 @@ public class DataStorage{
 		scanRequestResultParameters.putAll(runnerParams);
 		ScanRequestResult scanRequestResult = new ScanRequestResult(scanRequestResultParameters);
 		
-		ServerLogger.logInfo("NetsparkerCloudReport", "Scan request result retrieved successfully.");
+		ServerLogger.logInfo("NetsparkerEnterpriseReport", "Scan request result retrieved successfully.");
 		return scanRequestResult;
 	}
 }

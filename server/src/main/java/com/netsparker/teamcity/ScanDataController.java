@@ -35,7 +35,7 @@ public class ScanDataController extends AjaxControllerBase{
 		try {
 			
 			Map<String, String> parameters = getParameters(httpServletRequest);
-			//Stores scanRequestResult for NetsparkerCloudReport. Now scan log tab can access scan report from NC
+			//Stores scanRequestResult for NetsparkerEnterpriseReport. Now scan log tab can access scan report from NC
 			ScanRequestResult scanRequestResult = storage.StoreScanRequestResult(parameters);
 			
 			element.addContent(new Element("ScanTaskID").setText(scanRequestResult.getScanTaskID()));

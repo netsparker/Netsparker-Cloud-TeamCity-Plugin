@@ -4,10 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.netsparker</groupId>
     <artifactId>netsparkercloud-teamcity-plugin</artifactId>
-    <version>1.1</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <properties>
-        <teamcity-version>10.0</teamcity-version>
+        <teamcity-version>2020.1.1</teamcity-version>
+        <revision>1.2.0</revision>
     </properties>
     <repositories>
         <repository>
@@ -54,6 +55,13 @@
             </plugins>
         </pluginManagement>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.9</version>
+        </dependency>
+    </dependencies>
     <modules>
         <module>server</module>
         <module>agent</module>

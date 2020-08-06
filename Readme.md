@@ -1,19 +1,19 @@
-# Netsparker Cloud TeamCity Plugin
+## Introduction
 
-Netsparker Cloud is a scalable multi-user online web application security scanning solution with built-in workflow tools. It has built-in enterprise workflow tools and is specifically designed to help enterprises scan and manage the security of 100s and 1000s of websites.
+This repo contains source codes for Netsparker Enterprise Scan Plugin for Teamcity.
+Following links are used for understanding nature of Teamcity Plugins
 
-You can request demo at:
-
-https://www.netsparker.com/online-web-application-security-scanner/
-
-## User Guide 
-
-Netsparker Cloud TeamCity Plugin documentation is always available at:
-
-https://www.netsparker.com/blog/docs-and-faqs/how-to-install-configure-netsparker-cloud-scan-teamcity-plugin/
-
-Netsparker Cloud SDLC documentation is always available at:
-
-https://www.netsparker.com/blog/docs-and-faqs/integrating-netsparker-software-development-lifecycle-sdlc/
+1. Following link is the main development link for Teamcity plugins: [Main Development Link](https://confluence.jetbrains.com/display/TCD10/Developing+TeamCity+Plugins)
+2. Following link is the main development link for build runner plugins: [Build Runner Plugin](https://confluence.jetbrains.com/display/TCD10/Build+Runner+Plugin)
+3. Following link is the main development link for UI side of plugins: [Web UI Extensions](https://confluence.jetbrains.com/display/TCD10/Web+UI+Extensions)
+4. Teamcity-plugin(an empty plugin, includes both the server and the agent plugin parts) is used as the base project for Netsparker Enterprise Scan Plugin development. [Developing Plugins For Maven](https://confluence.jetbrains.com/display/TCD10/Developing+Plugins+Using+Maven)
 
 
+## Example Plugin Repos
+
+This project mainly benefited from todo-teamcity-plugin.
+
+1. https://github.com/rvdginste/todo-teamcity-plugin
+2. https://github.com/whitesource/teamcity-plugin
+
+Other repos are not considered useful for this project.

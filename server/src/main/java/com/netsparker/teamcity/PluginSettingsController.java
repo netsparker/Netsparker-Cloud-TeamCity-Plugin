@@ -49,20 +49,20 @@ public class PluginSettingsController extends AjaxControllerBase{
 		ServerLogger.logInfo("PluginSettingsController", "Validating parameters...");
 		ActionErrors errors = new ActionErrors();
 		
-		final String serverURL = request.getParameter("netsparkerCloudServerURL");
+		final String serverURL = request.getParameter("netsparkerEnterpriseServerURL");
 		if (StringUtil.isEmptyOrSpaces(serverURL)) {
-			errors.addError("netsparkerCloudApiURL", "The parameter 'Netsparker Cloud Server URL' must be specified.");
+			errors.addError("netsparkerEnterpriseApiURL", "The parameter 'Netsparker Enterprise Server URL' must be specified.");
 			ServerLogger.logWarn("PluginSettingsController", "Server URL is Empty.");
 		}
 		
 		if (!StringUtil.isEmptyOrSpaces(serverURL) && !AppCommon.IsUrlValid(serverURL)) {
-			errors.addError("netsparkerCloudApiURL", "The parameter 'Netsparker Cloud Server URL' is invalid.");
+			errors.addError("netsparkerEnterpriseApiURL", "The parameter 'Netsparker Enterprise Server URL' is invalid.");
 			ServerLogger.logWarn("PluginSettingsController", "Server URL is invalid.");
 		}
 		
-		final String apiToken = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerCloudApiToken"));
+		final String apiToken = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseApiToken"));
 		if (StringUtil.isEmptyOrSpaces(apiToken)) {
-			errors.addError("netsparkerCloudApiToken", "The parameter 'API Token' must be specified.");
+			errors.addError("netsparkerEnterpriseApiToken", "The parameter 'API Token' must be specified.");
 			ServerLogger.logWarn("PluginSettingsController", "API token is empty.");
 		}
 		
@@ -73,9 +73,9 @@ public class PluginSettingsController extends AjaxControllerBase{
 		final PluginSettings settings = new PluginSettings();
 		ServerLogger.logInfo("PluginSettingsController", "Saving parameters...");
 		
-		String serverURL = request.getParameter("netsparkerCloudServerURL");
-		String apiToken = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerCloudApiToken"));
-		String apiTokenInitial = request.getParameter("netsparkerCloudApiTokenInitialValue");
+		String serverURL = request.getParameter("netsparkerEnterpriseServerURL");
+		String apiToken = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseApiToken"));
+		String apiTokenInitial = request.getParameter("netsparkerEnterpriseApiTokenInitialValue");
 		
 		settings.setServerURL(serverURL);
 		if (!apiToken.equals(apiTokenInitial)) {

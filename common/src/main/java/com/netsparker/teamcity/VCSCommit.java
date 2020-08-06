@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 public class VCSCommit{
-	public static final String BUILD_ID_LITERAL = "netsparkerCloudBuildID";
-	public static final String BUILD_CONFIGURATION_NAME_LITERAL = "netsparkerCloudBuildConfigurationName";
-	public static final String BUILD_URL_LITERAL = "netsparkerCloudBuildURL";
-	public static final String BUILD_HAS_CHANGE = "netsparkerCloudBuildHasChange";
-	public static final String VCS_NAME_LITERAL = "netsparkerCloudVCS_Name";
-	public static final String VCS_VERSION_LITERAL = "netsparkerCloudVCS_BranchVersion";
-	public static final String VCS_Timestamp = "netsparkerCloudVCS_TimeStamp";
-	public static final String COMMITTER_USERNAME_LITERAL = "netsparkerCloudCommitterUserName";
+	public static final String BUILD_ID_LITERAL = "netsparkerEnterpriseBuildID";
+	public static final String BUILD_CONFIGURATION_NAME_LITERAL = "netsparkerEnterpriseBuildConfigurationName";
+	public static final String BUILD_URL_LITERAL = "netsparkerEnterpriseBuildURL";
+	public static final String BUILD_HAS_CHANGE = "netsparkerEnterpriseBuildHasChange";
+	public static final String VCS_NAME_LITERAL = "netsparkerEnterpriseVCS_Name";
+	public static final String VCS_VERSION_LITERAL = "netsparkerEnterpriseVCS_BranchVersion";
+	public static final String VCS_Timestamp = "netsparkerEnterpriseVCS_TimeStamp";
+	public static final String COMMITTER_USERNAME_LITERAL = "netsparkerEnterpriseCommitterUserName";
 	public static final String pluginVersion = "1.1.0";
 
 	

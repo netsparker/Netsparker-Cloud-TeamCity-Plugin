@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ScanRequest extends ApiRequestBase {
-	//API settings property names start with "netsparkerCloud" to be unique in Teamcity environment.
-	public static final String SCAN_TYPE_Literal = "netsparkerCloudScanType";
-	public static final String WEBSITE_ID_Literal = "netsparkerCloudWebsiteID";
-	public static final String PROFILE_ID_Literal = "netsparkerCloudProfileID";
+	//API settings property names start with "netsparkerEnterprise" to be unique in Teamcity environment.
+	public static final String SCAN_TYPE_Literal = "netsparkerEnterpriseScanType";
+	public static final String WEBSITE_ID_Literal = "netsparkerEnterpriseWebsiteID";
+	public static final String PROFILE_ID_Literal = "netsparkerEnterpriseProfileID";
 	
 	private final String json = "application/json";
 	

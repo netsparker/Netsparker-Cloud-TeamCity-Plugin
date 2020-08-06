@@ -43,7 +43,6 @@ public class ScanRequestResult extends ApiRequestBase {
     private boolean isError;
     private String errorMessage;
 
-    //Response from Netsparker Cloud API
     private ScanReport report = null;
     private Date previousRequestTime;
 
@@ -176,7 +175,7 @@ public class ScanRequestResult extends ApiRequestBase {
     }
 
     public ScanReport getReport(String apiToken) {
-        // if report is not generated and requested yet, request it from Netparker Cloud server.
+        // if report is not generated and requested yet, request it from Netsparker Cloud server.
         if (canAskForReportFromNCCloud()) {
             final ScanReport reportFromNcCloud = getReportFromNcCloud(apiToken);
             previousRequestTime = new Date();

@@ -13,10 +13,10 @@ public abstract class ApiRequestBase {
     protected static final String json = "application/json";
     protected static final String xml = "application/xml";
 
-    //API settings property names start with "netsparkerCloud" to be unique in Teamcity environment.
-    public static final String API_URL_Literal = "netsparkerCloudServerURL";
-    public static final String API_TOKEN_Literal = "netsparkerCloudApiToken";
-    public static final String API_ENCRYPTED_TOKEN_Literal = "netsparkerCloudEncryptedApiToken";
+    //API settings property names start with "netsparkerEnterprise" to be unique in Teamcity environment.
+    public static final String API_URL_Literal = "netsparkerEnterpriseServerURL";
+    public static final String API_TOKEN_Literal = "netsparkerEnterpriseApiToken";
+    public static final String API_ENCRYPTED_TOKEN_Literal = "netsparkerEnterpriseEncryptedApiToken";
 
     public final Map<String, String> Parameters;
     public final URL ApiURL;
