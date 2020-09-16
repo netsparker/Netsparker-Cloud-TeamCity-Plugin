@@ -34,6 +34,7 @@
     <dependency>
       <groupId>org.jetbrains.teamcity</groupId>
       <artifactId>agent-api</artifactId>
+      <!-- <version>2020.1.1</version> -->
       <version>${teamcity-version}</version>
       <scope>provided</scope>
     </dependency>
@@ -41,6 +42,7 @@
     <dependency>
       <groupId>org.jetbrains.teamcity</groupId>
       <artifactId>tests-support</artifactId>
+      <!-- <version>2020.1.1</version> -->
       <version>${teamcity-version}</version>
       <scope>test</scope>
     </dependency>

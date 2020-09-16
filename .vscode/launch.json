@@ -19,6 +19,13 @@
             "hostName": "localhost",
             "port": 10112,
             "preLaunchTask": "teamcityStart"
-        }
+        },
+        {
+            "type": "java",
+            "name": "Server Debug (Attach) Without Start",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 10111,
+        },
     ]
 }
