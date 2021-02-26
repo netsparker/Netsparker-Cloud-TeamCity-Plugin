@@ -3,7 +3,7 @@
 
 <div>
     <p id="netsparkerScanResultWarning"></p>
-    <iframe id="netsparkerScanResult" style="display:none;width:100%;height:70vh;" srcdoc="${content}"></iframe>
+    <iframe id="netsparkerScanResult" style="display:none;width:100%;height:100vh;" srcdoc="${content}"></iframe>
     <script>
         jQuery(document).ready(function () {
             var isReportGenerated = "${isReportGenerated}";
