@@ -41,6 +41,15 @@ public class WebsiteModelController extends AjaxControllerBase{
 		try {
 			parameters.put("netsparkerEnterpriseServerURL", pluginSettings.getServerURL());
 			parameters.put("netsparkerEnterpriseApiToken", pluginSettings.getApiToken());
+
+			if(pluginSettings.getProxyUsed()){
+				parameters.put("netsparkerEnterpriseProxyUsed",String.valueOf(pluginSettings.getProxyUsed()));
+				parameters.put("netsparkerEnterpriseProxyHost",pluginSettings.getProxyHost());
+				parameters.put("netsparkerEnterpriseProxyPort",String.valueOf(pluginSettings.getProxyPort()));
+				parameters.put("netsparkerEnterpriseProxyUsername",pluginSettings.getProxyUsername());
+				parameters.put("netsparkerEnterpriseEncryptedProxyPassword",pluginSettings.getEncryptedProxyPassword());
+			}
+
 			WebsiteModelRequest websiteModelRequest = new WebsiteModelRequest(parameters);
 			websiteModelRequest.requestPluginWebSiteModels();
 			int httpStatusCode = websiteModelRequest.getResponseStatusCode();

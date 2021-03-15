@@ -28,6 +28,16 @@
                     pluginSettingsForm.highlightErrorField($("netsparkerEnterpriseApiToken"));
                 },
 
+                onNetsparkerEnterpriseProxyHostError: function (elem) {
+                    $("error_netsparkerEnterpriseProxyHost").innerHTML = elem.firstChild.nodeValue;
+                    pluginSettingsForm.highlightErrorField($("error_netsparkerEnterpriseProxyHost"));
+                },
+
+                onNetsparkerEnterpriseProxyPortError: function (elem) {
+                    $("error_netsparkerEnterpriseProxyPort").innerHTML = elem.firstChild.nodeValue;
+                    pluginSettingsForm.highlightErrorField($("error_netsparkerEnterpriseProxyPort"));
+                },
+
                 onSuccessfulSave: function () {
                     pluginSettingsForm.enable();
                 },
@@ -96,17 +106,80 @@
                         <span class="error" id="error_netsparkerEnterpriseApiToken"></span>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <a class="btn btn_hint" id="netsparkerEnterpriseTestConnectionButton">Test Connection</a>
-                        <span id="netsparkerEnterpriseConnectionResult"></span>
-                    </td>
-                </tr>
+
+                    <tr>
+                            <th>
+                                <label for="netsparkerEnterpriseProxyUsed">Use Proxy:
+                                    <bs:helpIcon iconTitle="Proxy Use"/>
+                                </label>
+                            </th>
+                            <td>
+                                <forms:checkbox name="netsparkerEnterpriseProxyUsed" checked="${pluginSettingsManager.pluginSettings.proxyUsed}"
+                                                onclick="$('proxySettings').toggle()" id="netsparkerEnterpriseProxyUsed"/>
+                                <div id="proxySettings" style="display: ${pluginSettingsManager.pluginSettings.proxyUsed ? 'block' : 'none'}; margin-left: -7px;">
+                                    <table style="display: flex">
+                                        <tr>
+                                            <th>
+                                                <label for="netsparkerEnterpriseProxyHost">Host:<l:star/></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="netsparkerEnterpriseProxyHost"
+                                                       id="netsparkerEnterpriseProxyHost"
+                                                       value="${pluginSettingsManager.pluginSettings.proxyHost}"
+                                                       class="mediumField">
+                                                <span class="error" id="error_netsparkerEnterpriseProxyHost"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="netsparkerEnterpriseProxyPort">Port:<l:star/></label>
+                                            </th>
+                                            <td>
+                                                <input type="number" name="netsparkerEnterpriseProxyPort"
+                                                       id="netsparkerEnterpriseProxyPort"
+                                                       value="${pluginSettingsManager.pluginSettings.proxyPort}"
+                                                       class="mediumField">
+                                                <span class="error" id="error_netsparkerEnterpriseProxyPort"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="netsparkerEnterpriseProxyUsername">Username:</label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="netsparkerEnterpriseProxyUsername"
+                                                       id="netsparkerEnterpriseProxyUsername"
+                                                       value="${pluginSettingsManager.pluginSettings.proxyUsername}"
+                                                       class="mediumField">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="netsparkerEnterpriseProxyPassword">Password:</label>
+                                            </th>
+                                            <td>
+                                                <input type="password" name="netsparkerEnterpriseProxyPassword"
+                                                       id="netsparkerEnterpriseProxyPassword"
+                                                        <c:if test="${pluginSettingsManager.pluginSettings.proxyPassword != ''}">value="${pluginSettingsManager.random}"</c:if>
+                                                       class="mediumField">
+
+                                                <input type="hidden" id="netsparkerEnterpriseEncryptedProxyPassword"
+                                                       name="netsparkerEnterpriseEncryptedProxyPassword"
+                                                       value="${pluginSettingsManager.pluginSettings.encryptedProxyPassword}"/>
+
+                                                <input type="hidden" id="netsparkerEnterpriseProxyPasswordInitial"
+                                                       name="netsparkerEnterpriseProxyPasswordInitialValue" value=""/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                    </tr>
                 </l:settingsGroup>
             </table>
             <script>
                 var ncServerURLInput, ncApiTokenInput, ncApiTokenInitialValueInput, ncEncryptedApiTokenInput,
-                    ncPublicKeyInput;
+                    ncPublicKeyInput,ncProxyUsed,ncProxyHost,ncProxyPort,ncProxyUsername,ncProxyPassword,ncEncryptedProxyPasswordInput,ncProxyPasswordInitialValueInput;
                 var ncTestConnectionResultSpan, ncTestConnectionButton;
                 var ncScanParams = {}, ncTestRequestParams = {};
                 //do noy use $ for Jquery instead use jQuery
@@ -120,6 +193,15 @@
                     ncPublicKeyInput = jQuery("#publicKey");
                     ncApiTokenInitialValueInput = jQuery("#netsparkerEnterpriseApiTokenInitial");
                     ncEncryptedApiTokenInput = jQuery("#netsparkerEnterpriseEncryptedApiToken");
+                    ncProxyPasswordInitialValueInput = jQuery("#netsparkerEnterpriseProxyPasswordInitial");
+                    ncEncryptedProxyPasswordInput = jQuery("#netsparkerEnterpriseEncryptedProxyPassword");
+
+
+                    ncProxyUsed = jQuery("#netsparkerEnterpriseProxyUsed");
+                    ncProxyHost = jQuery("#netsparkerEnterpriseProxyHost");
+                    ncProxyPort = jQuery("#netsparkerEnterpriseProxyPort");
+                    ncProxyUsername = jQuery("#netsparkerEnterpriseProxyUsername");
+                    ncProxyPassword = jQuery("#netsparkerEnterpriseProxyPassword");
 
                     ncTestConnectionResultSpan = jQuery("#netsparkerEnterpriseConnectionResult");
                     ncTestConnectionButton = jQuery("#netsparkerEnterpriseTestConnectionButton");
@@ -130,6 +212,9 @@
                     ncTestRequestParams.ApiTokenInitialValue = ncApiTokenInput.val();
                     ncApiTokenInitialValueInput.val(ncApiTokenInput.val());
 
+                    ncTestRequestParams.ProxyPasswordInitialValue = ncProxyPassword.val();
+                    ncProxyPasswordInitialValueInput.val(ncProxyPassword.val());
+
                     updateNcParams();
                 }
 
@@ -137,6 +222,19 @@
                     ncScanParams.serverURL = ncServerURLInput.val();
                     ncScanParams.apiToken = ncApiTokenInput.val();
                     ncScanParams.encryptedApiToken = ncEncryptedApiTokenInput.val();
+                    ncScanParams.encryptedProxyPassword = ncEncryptedProxyPasswordInput.val();
+                    ncScanParams.proxyUsed = ncProxyUsed.is(':checked');
+
+                    ncScanParams.proxyHost = ncProxyHost.val();
+                    ncScanParams.proxyPort = ncProxyPort.val();
+                    ncScanParams.proxUsername = ncProxyUsername.val();
+                    ncScanParams.proxyPassword = ncProxyPassword.val();
+
+                    if (ncScanParams.proxyPassword != ncTestRequestParams.ProxyPasswordInitialValue) {
+                        ncScanParams.encryptedProxyPassword= "";
+                        ncEncryptedProxyPasswordInput.val("");
+                    }
+
                     if (ncScanParams.apiToken != ncTestRequestParams.ApiTokenInitialValue) {
                         ncScanParams.encryptedApiToken = "";
                         ncEncryptedApiTokenInput.val("");
@@ -144,6 +242,13 @@
                     ncTestRequestParams.netsparkerEnterpriseServerURL = ncScanParams.serverURL;
                     ncTestRequestParams.netsparkerEnterpriseApiToken = BS.Encrypt.encryptData(ncScanParams.apiToken, ncPublicKeyInput.val());
                     ncTestRequestParams.netsparkerEnterpriseEncryptedApiToken = ncScanParams.encryptedApiToken;
+
+                    ncTestRequestParams.netsparkerEnterpriseProxyUsed = ncScanParams.proxyUsed;
+                    ncTestRequestParams.netsparkerEnterpriseProxyHost = ncScanParams.proxyHost;
+                    ncTestRequestParams.netsparkerEnterpriseProxyPort = ncScanParams.proxyPort;
+                    ncTestRequestParams.netsparkerEnterpriseProxyUsername = ncScanParams.proxUsername;
+                    ncTestRequestParams.netsparkerEnterpriseProxyPassword = BS.Encrypt.encryptData(ncScanParams.proxyPassword, ncPublicKeyInput.val());
+                    ncTestRequestParams.netsparkerEnterpriseEncryptedProxyPassword = ncScanParams.encryptedProxyPassword;
                 }
 
                 function ncTestConnection() {
@@ -153,29 +258,35 @@
                     request.done(function (data, statusText, xhr) {
                         var status = jQuery(data).find("httpStatusCode").text();
                         if (status == "200") {
-                            ncTestConnectionResultSpan.text("Successfully connected to the Netsparker Enterprise.");
+                            ncTestConnectionResultSpan.text("Successfully connected to the Netsparker Enterprise.").css("color","green");
                         } else {
                             if (status == "0") {
-                                ncTestConnectionResultSpan.text("Failed to connect to the Netsparker Enterprise. HTTP status code: 0");
+                                ncTestConnectionResultSpan.text("Failed to connect to the Netsparker Enterprise. HTTP status code: 0").css("color","red");
                             } else {
-                                ncTestConnectionResultSpan.text("Netsparker Enterprise rejected the request. HTTP status code: " + status);
+                                ncTestConnectionResultSpan.text("Netsparker Enterprise rejected the request. HTTP status code: " + status).css("color","firebrick");
                             }
                         }
                     });
 
                     request.fail(function (xhr, statusText) {
-                        ncTestConnectionResultSpan.text("Controller not found. HTTP status code: " + xhr.status);
+                        ncTestConnectionResultSpan.text("Controller not found. HTTP status code: " + xhr.status).css("color","red");
                     });
+
+                    setTimeout(function(){
+                        ncTestConnectionResultSpan.text('');
+                    }, 3000)
                 }
+
             </script>
             <div class="saveButtonsBlock" id="saveButtons" style="display:block">
                 <forms:submit label="Save"></forms:submit>
-                <a class="btn cancel" href="${pluginSettingsManager.cameFromSupport.cameFromUrl}">Cancel</a>
                 <forms:saving/>
                 <input type="hidden" value="0" name="numberOfSettingsChangesEvents">
                 <input type="hidden" id="publicKey" name="publicKey"
                        value="${pluginSettingsManager.hexEncodedPublicKey}"/>
+                <a class="btn btn_hint" id="netsparkerEnterpriseTestConnectionButton">Test Connection</a>
             </div>
+            <span id="netsparkerEnterpriseConnectionResult"></span>
         </form>
     </bs:refreshable>
 </div>
