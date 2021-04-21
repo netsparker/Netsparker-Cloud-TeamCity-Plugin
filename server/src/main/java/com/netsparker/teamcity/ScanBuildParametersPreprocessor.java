@@ -45,7 +45,11 @@ public class ScanBuildParametersPreprocessor implements ParametersPreprocessor{
 	private boolean addBuildParameters(SBuild build) {
 		ServerLogger.logInfo("ScanBuildParametersPreprocessor", "Getting plugin settings...");
 		final PluginSettings pluginSettings = pluginSettingsManager.getPluginSettings();
-		
+
+		if(pluginSettings == null){
+			return false;
+		}
+
 		ServerLogger.logInfo("ScanBuildParametersPreprocessor", "Adding API settings...");
 		parameters.put(ApiRequestBase.API_URL_Literal, pluginSettings.getServerURL());
 		parameters.put(ApiRequestBase.API_TOKEN_Literal, pluginSettings.getApiToken());
@@ -58,26 +62,26 @@ public class ScanBuildParametersPreprocessor implements ParametersPreprocessor{
 			parameters.put(ApiRequestBase.PROXY_Password_ENCRYPTED,pluginSettings.getEncryptedProxyPassword());
 			parameters.put(ApiRequestBase.PROXY_Password,pluginSettings.getProxyPassword());
 		}
-		
+
 		ServerLogger.logInfo("ScanBuildParametersPreprocessor", "Adding CI parameters...");
 		final long buildId = build.getBuildId();
 		parameters.put(VCSCommit.BUILD_ID_LITERAL, String.valueOf(buildId));
-		
+
 		final String buildConfigurationName = build.getBuildTypeName();
 		parameters.put(VCSCommit.BUILD_CONFIGURATION_NAME_LITERAL, buildConfigurationName);
-		
+
 		final String buildURL = webLinks.getViewLogUrl(build);
 		parameters.put(VCSCommit.BUILD_URL_LITERAL, buildURL);
-		
+
 		final boolean buildHasChange = !build.getContainingChanges().isEmpty();
 		parameters.put(VCSCommit.BUILD_HAS_CHANGE, String.valueOf(buildHasChange));
-		
+
 		//this date will be overwritten if we obtain date from vcs in addVCSParameters method.
 		final Date ciDate = new Date();
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
 		String dateString = originalFormat.format(ciDate);
 		parameters.put(VCSCommit.VCS_Timestamp, dateString);
-		
+
 		return buildHasChange;
 	}
 	
