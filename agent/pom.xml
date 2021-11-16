@@ -15,7 +15,7 @@
   </build>
   <parent>
     <groupId>com.netsparker</groupId>
-    <artifactId>netsparkercloud-teamcity-plugin</artifactId>
+    <artifactId>netsparkerenterprise-teamcity-plugin</artifactId>
     <version>${revision}</version>
   </parent>
 

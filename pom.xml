@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.netsparker</groupId>
-    <artifactId>netsparkercloud-teamcity-plugin</artifactId>
+    <artifactId>netsparkerenterprise-teamcity-plugin</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
     <properties>
-        <teamcity-version>2020.2.2</teamcity-version>
-        <revision>1.2.8</revision>
+        <teamcity-version>2021.2</teamcity-version>
+        <revision>1.2.10</revision>
     </properties>
     <repositories>
         <repository>
