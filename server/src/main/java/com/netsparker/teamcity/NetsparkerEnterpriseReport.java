@@ -17,8 +17,7 @@ public class NetsparkerEnterpriseReport extends LogTabBase {
 	private PluginSettingsManager pluginSettingsManager;
 
 	public NetsparkerEnterpriseReport(@NotNull PagePlaces pagePlaces, @NotNull SBuildServer server,
-			@NotNull PluginDescriptor descriptor,
-			@NotNull PluginSettingsManager pluginSettingsManager) {
+			@NotNull PluginDescriptor descriptor, @NotNull PluginSettingsManager pluginSettingsManager) {
 		super("Netsparker Enterprise Report", "NetsparkerEnterpriseReportTab", pagePlaces, server);
 		setTabTitle(getTitle());
 		setPluginName(getClass().getSimpleName());
@@ -29,14 +28,14 @@ public class NetsparkerEnterpriseReport extends LogTabBase {
 	}
 
 	@Override
-	protected void fillModel(@NotNull Map<String, Object> model,
-			@NotNull HttpServletRequest request, @NotNull SBuild build) {
+	protected void fillModel(@NotNull Map<String, Object> model, @NotNull HttpServletRequest request,
+			@NotNull SBuild build) {
 		try {
 			Map<String, String> runnerProperties = getProperties(build);
 
 			DataStorage dataStorage = new DataStorage(server);
-			ScanRequestResult scanRequestResult =
-					dataStorage.GetScanRequestResult(build.getBuildId(), runnerProperties);
+			ScanRequestResult scanRequestResult = dataStorage.GetScanRequestResult(build.getBuildId(),
+					runnerProperties);
 
 			ServerLogger.logInfo("NetsparkerEnterpriseReport", "Requesting the report...");
 
@@ -48,7 +47,8 @@ public class NetsparkerEnterpriseReport extends LogTabBase {
 
 			String content = report.getContent();
 
-			// api response content can be different but if its report(html) then html encode it
+			// api response content can be different but if its report(html) then html
+			// encode it
 			if (report.isReportGenerated() && !StringUtils.isBlank(content)) {
 				content = StringEscapeUtils.escapeHtml4(content);
 			}
@@ -70,8 +70,7 @@ public class NetsparkerEnterpriseReport extends LogTabBase {
 
 			model.put("errorMessage", errorMessage);
 
-			ServerLogger.logInfo("NetsparkerEnterpriseReport",
-					"Getting the report info succeeded.");
+			ServerLogger.logInfo("NetsparkerEnterpriseReport", "Getting the report info succeeded.");
 		} catch (Exception exception) {
 			ServerLogger.logError("NetsparkerEnterpriseReport", exception);
 

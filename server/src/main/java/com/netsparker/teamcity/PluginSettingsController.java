@@ -11,24 +11,24 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class PluginSettingsController extends AjaxControllerBase{
-	
+public class PluginSettingsController extends AjaxControllerBase {
+
 	private PluginSettingsManager pluginSettingsManager;
-	
+
 	public PluginSettingsController(@NotNull final SBuildServer server,
-	                                final PluginSettingsManager pluginSettingsManager) {
+			final PluginSettingsManager pluginSettingsManager) {
 		super(server);
 		this.pluginSettingsManager = pluginSettingsManager;
 	}
-	
+
 	@Override
 	protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
 		return null;
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response, Element xmlResponse) {
-		
+
 		ActionErrors errors = validate(request);
 		if (errors.hasErrors()) {
 			ServerLogger.logWarn("PluginSettingsController", errors.getErrors().size() + " Errors:");
@@ -39,29 +39,32 @@ public class PluginSettingsController extends AjaxControllerBase{
 			ServerLogger.logWarn("PluginSettingsController", "Parameters are not valid.");
 			return;
 		}
-		
+
 		setPluginSettings(request);
-		
+
 		getOrCreateMessages(request).addMessage("settingsSaved", "Settings saved successfully.");
 	}
-	
+
 	private ActionErrors validate(final HttpServletRequest request) {
 		ServerLogger.logInfo("PluginSettingsController", "Validating parameters...");
 		ActionErrors errors = new ActionErrors();
-		
+
 		final String serverURL = request.getParameter("netsparkerEnterpriseServerURL");
 		if (StringUtil.isEmptyOrSpaces(serverURL)) {
-			errors.addError("netsparkerEnterpriseApiURL", "The parameter 'Netsparker Enterprise Server URL' must be specified.");
+			errors.addError("netsparkerEnterpriseApiURL",
+					"The parameter 'Netsparker Enterprise Server URL' must be specified.");
 			ServerLogger.logWarn("PluginSettingsController", "Server URL is Empty.");
 		}
-		
+
 		if (!StringUtil.isEmptyOrSpaces(serverURL) && !AppCommon.IsUrlValid(serverURL)) {
-			errors.addError("netsparkerEnterpriseApiURL", "The parameter 'Netsparker Enterprise Server URL' is invalid.");
+			errors.addError("netsparkerEnterpriseApiURL",
+					"The parameter 'Netsparker Enterprise Server URL' is invalid.");
 			ServerLogger.logWarn("PluginSettingsController", "Server URL is invalid.");
 		}
-		
-		String apiToken = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseApiToken"));
-		if(apiToken == null || StringUtil.isEmptyOrSpaces(apiToken)){
+
+		String apiToken = RSACipher
+				.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseApiToken"));
+		if (apiToken == null || StringUtil.isEmptyOrSpaces(apiToken)) {
 			apiToken = RSACipher.decryptWebRequestData(request.getParameter("netsparkerEnterpriseEncryptedApiToken"));
 		}
 
@@ -84,16 +87,17 @@ public class PluginSettingsController extends AjaxControllerBase{
 				ServerLogger.logWarn("PluginSettingsController", "Proxy Port is Empty.");
 			}
 		}
-		
+
 		return errors;
 	}
-	
+
 	private void setPluginSettings(HttpServletRequest request) {
 		final PluginSettings settings = new PluginSettings();
 		ServerLogger.logInfo("PluginSettingsController", "Saving parameters...");
 
 		String serverURL = request.getParameter("netsparkerEnterpriseServerURL");
-		String apiToken = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseApiToken"));
+		String apiToken = RSACipher
+				.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseApiToken"));
 		String apiTokenInitial = request.getParameter("netsparkerEnterpriseApiTokenInitialValue");
 
 		settings.setServerURL(serverURL);
@@ -105,15 +109,17 @@ public class PluginSettingsController extends AjaxControllerBase{
 
 		Boolean proxyUsed = request.getParameter("netsparkerEnterpriseProxyUsed") != null;
 
-		if(proxyUsed){
+		if (proxyUsed) {
 
 			String proxyHost = request.getParameter("netsparkerEnterpriseProxyHost");
 			String proxyPort = request.getParameter("netsparkerEnterpriseProxyPort");
 			String proxyUsername = request.getParameter("netsparkerEnterpriseProxyUsername");
 
-			String encryptedPassword = RSACipher.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseProxyPassword"));
-			if(encryptedPassword == null || StringUtil.isEmptyOrSpaces(encryptedPassword)){
-				encryptedPassword = RSACipher.decryptWebRequestData(request.getParameter("netsparkerEnterpriseEncryptedProxyPassword"));
+			String encryptedPassword = RSACipher
+					.decryptWebRequestData(request.getParameter("encryptedNetsparkerEnterpriseProxyPassword"));
+			if (encryptedPassword == null || StringUtil.isEmptyOrSpaces(encryptedPassword)) {
+				encryptedPassword = RSACipher
+						.decryptWebRequestData(request.getParameter("netsparkerEnterpriseEncryptedProxyPassword"));
 			}
 
 			if (!StringUtil.isEmptyOrSpaces(encryptedPassword)) {
@@ -131,8 +137,7 @@ public class PluginSettingsController extends AjaxControllerBase{
 			settings.setProxyHost(proxyHost);
 			settings.setProxyPort(proxyPort);
 			settings.setProxyUsername(proxyUsername);
-		}
-		else{
+		} else {
 			settings.setProxyUsed(false);
 		}
 

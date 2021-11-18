@@ -95,26 +95,27 @@ public class PluginSettingsManager {
 		}
 	}
 
-	private void OverwriteConfigSettings(){
-		try{
-			if(pluginSettings.getApiToken() != ""){
+	private void OverwriteConfigSettings() {
+		try {
+			if (pluginSettings.getApiToken() != "") {
 				pluginSettings.setApiToken(pluginSettings.getApiToken());
-			}else{
+			} else {
 				pluginSettings.setApiToken("");
 			}
-	
-			if(pluginSettings.getServerURL() != ""){
+
+			if (pluginSettings.getServerURL() != "") {
 				pluginSettings.setServerURL(pluginSettings.getServerURL());
-			}else{
+			} else {
 				pluginSettings.setServerURL("");
 			}
-	
+
 			pluginSettings.setProxyUsed(false);
 			pluginSettings.setProxyHost("");
 			pluginSettings.setProxyPassword("");
 			pluginSettings.setProxyPort("");
 			pluginSettings.setProxyUsername("");
 			save();
-		}catch (Exception e){}
+		} catch (Exception e) {
+		}
 	}
 }

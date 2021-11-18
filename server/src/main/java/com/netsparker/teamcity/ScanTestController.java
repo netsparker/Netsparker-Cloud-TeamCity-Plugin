@@ -13,31 +13,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-public class ScanTestController extends AjaxControllerBase{
+public class ScanTestController extends AjaxControllerBase {
 	private final WebControllerManager webControllerManager;
-	
+
 	public ScanTestController(@NotNull final SBuildServer server,
-	                          @NotNull final WebControllerManager webControllerManager) {
+			@NotNull final WebControllerManager webControllerManager) {
 		super(server);
 		this.webControllerManager = webControllerManager;
 		webControllerManager.registerController(ScanConstants.TEST_CONTROLLER_RELATIVE_URL, this);
 	}
-	
+
 	@Override
 	@Nullable
-	protected ModelAndView doGet(@NotNull final HttpServletRequest request, @NotNull final HttpServletResponse response) {
+	protected ModelAndView doGet(@NotNull final HttpServletRequest request,
+			@NotNull final HttpServletResponse response) {
 		return null;
 	}
-	
+
 	@Override
-	protected void doPost(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull Element element) {
+	protected void doPost(@NotNull HttpServletRequest httpServletRequest,
+			@NotNull HttpServletResponse httpServletResponse, @NotNull Element element) {
 		Map<String, String> parameters = getParameters(httpServletRequest);
-		String decryptedToken = RSACipher.decryptWebRequestData(httpServletRequest.getParameter(ApiRequestBase.API_TOKEN_Literal));
+		String decryptedToken = RSACipher
+				.decryptWebRequestData(httpServletRequest.getParameter(ApiRequestBase.API_TOKEN_Literal));
 		parameters.put(ApiRequestBase.API_TOKEN_Literal, decryptedToken);
 
 		Boolean proxyUsed = Boolean.parseBoolean(httpServletRequest.getParameter(ApiRequestBase.PROXY_Used));
 		String proxyPassword = httpServletRequest.getParameter(ApiRequestBase.PROXY_Password);
-		if(proxyUsed &&  !StringUtil.isEmptyOrSpaces(proxyPassword)){
+		if (proxyUsed && !StringUtil.isEmptyOrSpaces(proxyPassword)) {
 			proxyPassword = RSACipher.decryptWebRequestData(proxyPassword);
 			parameters.put(ApiRequestBase.PROXY_Password, proxyPassword);
 		}
@@ -46,15 +49,17 @@ public class ScanTestController extends AjaxControllerBase{
 			ServerLogger.logInfo("ScanTestController", "Testing the Netsparker Enterprise connection.");
 			WebsiteModelRequest websiteModelRequest = new WebsiteModelRequest(parameters);
 			websiteModelRequest.requestPluginWebSiteModels();
-			int httpStatusCode=websiteModelRequest.getResponseStatusCode();
+			int httpStatusCode = websiteModelRequest.getResponseStatusCode();
 			element.addContent(new Element("httpStatusCode").setText(String.valueOf(httpStatusCode)));
-			
+
 			if (httpStatusCode == 200) {
 				ServerLogger.logInfo("ScanTestController", "Netsparker Enterprise test connection succeeded.");
 			} else {
-				ServerLogger.logError("ScanTestController", "Netsparker Enterprise rejected the request. HTTP status code: " + String.valueOf(httpStatusCode));
+				ServerLogger.logError("ScanTestController",
+						"Netsparker Enterprise rejected the request. HTTP status code: "
+								+ String.valueOf(httpStatusCode));
 			}
-			
+
 		} catch (Exception e) {
 			ServerLogger.logError("WebsiteModelController", e);
 			element.removeContent();

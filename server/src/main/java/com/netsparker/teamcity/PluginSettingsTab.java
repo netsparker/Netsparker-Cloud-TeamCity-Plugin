@@ -17,11 +17,9 @@ public class PluginSettingsTab extends SimpleCustomTab {
 
 	public PluginSettingsTab(@NotNull final SBuildServer server,
 			@NotNull final WebControllerManager webControllerManager,
-			@NotNull final PluginSettingsManager pluginSettingsManager,
-			@NotNull final ScanRunType scanRunType) {
-		super(webControllerManager, PlaceId.ADMIN_SERVER_CONFIGURATION_TAB,
-				"netsparkerEnterprisePluginSettings", scanRunType.getPluginSettingsJspFilePath(),
-				"Netsparker Enterprise");
+			@NotNull final PluginSettingsManager pluginSettingsManager, @NotNull final ScanRunType scanRunType) {
+		super(webControllerManager, PlaceId.ADMIN_SERVER_CONFIGURATION_TAB, "netsparkerEnterprisePluginSettings",
+				scanRunType.getPluginSettingsJspFilePath(), "Netsparker Enterprise");
 
 		this.pluginSettingsManager = pluginSettingsManager;
 

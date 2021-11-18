@@ -32,8 +32,8 @@ public class ScanReport {
         this.requestURI = requestURI;
     }
 
-    public ScanReport(boolean scanRequestHasError, String scanRequestErrorMessage,
-            boolean reportRequestHasError, String reportRequestErrorMessage, String requestURI) {
+    public ScanReport(boolean scanRequestHasError, String scanRequestErrorMessage, boolean reportRequestHasError,
+            String reportRequestErrorMessage, String requestURI) {
         this.reportRequestResponse = null;
         this.scanRequestHasError = scanRequestHasError;
         this.scanRequestErrorMessage = scanRequestErrorMessage;
@@ -44,7 +44,8 @@ public class ScanReport {
     }
 
     public boolean isReportGenerated() {
-        // when report stored, it will be loaded from disk for later requests. There is an exception
+        // when report stored, it will be loaded from disk for later requests. There is
+        // an exception
         // potential.
         try {
             return getContentType().equalsIgnoreCase("text/html");
@@ -91,8 +92,7 @@ public class ScanReport {
             content = content + "<p>Request URL: " + requestURI + "</p>";
         }
         if (reportRequestResponse != null && reportRequestResponse.getStatusLine() != null) {
-            content = content + "<p>HttpStatusCode: "
-                    + reportRequestResponse.getStatusLine().getStatusCode() + "</p>";
+            content = content + "<p>HttpStatusCode: " + reportRequestResponse.getStatusLine().getStatusCode() + "</p>";
         }
         if (ExceptionMessage != null) {
             content = content + "<p>Exception Message: " + ExceptionMessage + "</p>";

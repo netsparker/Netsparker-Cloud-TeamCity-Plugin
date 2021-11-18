@@ -21,7 +21,8 @@ public abstract class ApiRequestBase {
     protected static final String json = "application/json";
     protected static final String xml = "application/xml";
 
-    //API settings property names start with "netsparkerEnterprise" to be unique in Teamcity environment.
+    // API settings property names start with "netsparkerEnterprise" to be unique in
+    // Teamcity environment.
     public static final String API_URL_Literal = "netsparkerEnterpriseServerURL";
     public static final String API_TOKEN_Literal = "netsparkerEnterpriseApiToken";
     public static final String API_ENCRYPTED_TOKEN_Literal = "netsparkerEnterpriseEncryptedApiToken";
@@ -85,20 +86,18 @@ public abstract class ApiRequestBase {
 
         boolean useProxy = Boolean.parseBoolean(this.Parameters.get(PROXY_Used));
 
-        if(!useProxy){
-            return HttpClientBuilder
-                    .create()
-                    .build();
-        }
-        else{
+        if (!useProxy) {
+            return HttpClientBuilder.create().build();
+        } else {
 
-            String authPassword ="";
+            String authPassword = "";
 
             final String authUser = this.Parameters.get(PROXY_Username);
             authPassword = RSACipher.decryptWebRequestData(this.Parameters.get(PROXY_Password_ENCRYPTED));
 
-            //This block was written because the value "PROXY_Password_ENCRYPTED" from ScanBuildParametersPreprocessor was unable to be decrypted.
-            if(StringUtil.isEmptyOrSpaces(authPassword) || authPassword == null){
+            // This block was written because the value "PROXY_Password_ENCRYPTED" from
+            // ScanBuildParametersPreprocessor was unable to be decrypted.
+            if (StringUtil.isEmptyOrSpaces(authPassword) || authPassword == null) {
                 authPassword = this.Parameters.get(PROXY_Password);
             }
 
@@ -111,13 +110,10 @@ public abstract class ApiRequestBase {
 
             HttpHost myProxy = new HttpHost(host, port);
 
-            HttpClientBuilder  clientBuilder = HttpClientBuilder.create();
+            HttpClientBuilder clientBuilder = HttpClientBuilder.create();
 
-            return clientBuilder
-                    .setProxy(myProxy)
-                    .setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy())
-                    .setDefaultCredentialsProvider(credsProvider)
-                    .disableCookieManagement().build();
+            return clientBuilder.setProxy(myProxy).setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy())
+                    .setDefaultCredentialsProvider(credsProvider).disableCookieManagement().build();
         }
     }
 
@@ -131,8 +127,7 @@ public abstract class ApiRequestBase {
         }
 
         String auth = ":" + apiToken;
-        byte[] encodedAuth = Base64.encodeBase64(
-                auth.getBytes(StandardCharsets.ISO_8859_1));
+        byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.ISO_8859_1));
         String authHeader = "Basic " + new String(encodedAuth);
 
         return authHeader;

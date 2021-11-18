@@ -17,7 +17,8 @@ public class WebsiteModelRequest extends ApiRequestBase {
     private int responseStatusCode = 0;
     private HttpResponse response;
 
-    public WebsiteModelRequest(@NotNull Map<String, String> scanParameters) throws  NullPointerException, URISyntaxException,IOException {
+    public WebsiteModelRequest(@NotNull Map<String, String> scanParameters)
+            throws NullPointerException, URISyntaxException, IOException {
         super(scanParameters);
         pluginWebSiteModelsUri = new URL(ApiURL, "api/1.0/scans/PluginWebSiteModels").toURI();
         requestPluginWebSiteModels();
@@ -32,7 +33,7 @@ public class WebsiteModelRequest extends ApiRequestBase {
         httpGet.setHeader(HttpHeaders.AUTHORIZATION, getAuthHeader());
 
         response = httpClient.execute(httpGet);
-        responseStatusCode=response.getStatusLine().getStatusCode();
+        responseStatusCode = response.getStatusLine().getStatusCode();
 
         if (responseStatusCode == 200) {
             responseContent = AppCommon.ParseResponseToString(response);

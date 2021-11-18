@@ -7,7 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.List;
 import java.util.Map;
 
-public class VCSCommit{
+public class VCSCommit {
 	public static final String BUILD_ID_LITERAL = "netsparkerEnterpriseBuildID";
 	public static final String BUILD_CONFIGURATION_NAME_LITERAL = "netsparkerEnterpriseBuildConfigurationName";
 	public static final String BUILD_URL_LITERAL = "netsparkerEnterpriseBuildURL";
@@ -18,13 +18,12 @@ public class VCSCommit{
 	public static final String COMMITTER_USERNAME_LITERAL = "netsparkerEnterpriseCommitterUserName";
 	public static final String pluginVersion = "1.1.0";
 
-	
 	private final Map<String, String> parametersWithPrefix;
-	
+
 	public VCSCommit(Map<String, String> parameters) {
 		this.parametersWithPrefix = parameters;
-		
-		serverVersion=ServerVersionHolder.getVersion().getDisplayVersion();
+
+		serverVersion = ServerVersionHolder.getVersion().getDisplayVersion();
 		buildId = parameters.get(BUILD_ID_LITERAL);
 		buildConfigurationName = parameters.get(BUILD_CONFIGURATION_NAME_LITERAL);
 		buildURL = parameters.get(BUILD_URL_LITERAL);
@@ -34,7 +33,7 @@ public class VCSCommit{
 		committer = parameters.get(COMMITTER_USERNAME_LITERAL);
 		ciTimestamp = parameters.get(VCSCommit.VCS_Timestamp);
 	}
-	
+
 	public final String serverVersion;
 	public final String buildId;
 	public final String buildConfigurationName;
@@ -44,12 +43,13 @@ public class VCSCommit{
 	public final String vcsVersion;
 	public final String ciTimestamp;
 	public final String committer;
-	
+
 	public void addVcsCommitInfo(List<NameValuePair> params) {
 		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildId", buildId));
 		params.add(new BasicNameValuePair("VcsCommitInfoModel.IntegrationSystem", "Teamcity"));
-		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildServerVersion", ServerVersionHolder.getVersion().getDisplayVersion()));
-		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiNcPluginVersion",pluginVersion));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildServerVersion",
+				ServerVersionHolder.getVersion().getDisplayVersion()));
+		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiNcPluginVersion", pluginVersion));
 		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildConfigurationName", buildConfigurationName));
 		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildUrl", buildURL));
 		params.add(new BasicNameValuePair("VcsCommitInfoModel.CiBuildHasChange", String.valueOf(buildHasChange)));
